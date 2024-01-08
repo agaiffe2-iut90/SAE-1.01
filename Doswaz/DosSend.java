@@ -176,44 +176,81 @@ public class DosSend {
 
 
     /**
-     * Display a signal in a window
-     * @param sig  the signal to display
-     * @param start the first sample to display
-     * @param stop the last sample to display
-     * @param mode "line" or "point"
-     * @param title the title of the window
+     * Affiche un signal sous forme de tableau d'entiers.
+     *
+     * @param sig    le signal à afficher (tableau d'entiers)
+     * @param start  le premier échantillon à afficher
+     * @param stop   le dernier échantillon à afficher
+     * @param mode   "line" ou "point"
+     * @param title  le titre de la fenêtre
      */
-    public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
-        StdDraw.setXscale(start, stop);
-        StdDraw.setYscale(-1.0, 1.0);
+    public static void displaySig(int[] sig, int start, int stop, String mode, String title) {
+        StdDraw.clear();
+        StdDraw.setCanvasSize(800, 400);
 
-        StdDraw.setPenColor(StdDraw.BLACK);
-        StdDraw.line(start, 0, stop, 0); // X-axis
+        int panelWidth = 800;
+        int panelHeight = 400;
+        int numSamples = stop - start;
+        double timeScale = (double) panelWidth / numSamples;
 
-        double step = (stop - start) / (sig.length - 1);
+        for (int i = start; i < stop - 1; i++) {
+            double t1 = (i - start) * timeScale;
+            double t2 = (i + 1 - start) * timeScale;
+            int y1 = sig[i];
+            int y2 = sig[i + 1];
 
-        if (mode.equals("line")) {
-            for (int i = 0; i < sig.length - 1; i++) {
-                StdDraw.line(start + i * step, sig[i], start + (i + 1) * step, sig[i + 1]);
-            }
-        } else if (mode.equals("point")) {
-            StdDraw.setPenRadius(0.01);
-            for (int i = 0; i < sig.length; i++) {
-                StdDraw.point(start + i * step, sig[i]);
+            if (mode.equals("line")) {
+                StdDraw.line(t1, y1, t2, y2);
+            } else if (mode.equals("point")) {
+                StdDraw.point(t1, y1);
             }
         }
 
-        StdDraw.setPenColor(StdDraw.RED);
-        StdDraw.textLeft(start, 1.1, title);
+        StdDraw.show();
     }
 
     /**
-     * Display signals in a window
-     * @param listOfSigs  a list of the signals to display
-     * @param start the first sample to display
-     * @param stop the last sample to display
-     * @param mode "line" or "point"
-     * @param title the title of the window
+     * Affiche un signal sous forme de tableau de réels.
+     *
+     * @param sig    le signal à afficher (tableau de réels)
+     * @param start  le premier échantillon à afficher
+     * @param stop   le dernier échantillon à afficher
+     * @param mode   "line" ou "point"
+     * @param title  le titre de la fenêtre
+     */
+    public static void displaySig(double[] sig, int start, int stop, String mode, String title) {
+        StdDraw.clear();
+        StdDraw.setCanvasSize(800, 400);
+
+        int panelWidth = 800;
+        int panelHeight = 400;
+        int numSamples = stop - start;
+        double timeScale = (double) panelWidth / numSamples;
+
+        for (int i = start; i < stop - 1; i++) {
+            double t1 = (i - start) * timeScale;
+            double t2 = (i + 1 - start) * timeScale;
+            double y1 = sig[i];
+            double y2 = sig[i + 1];
+
+            if (mode.equals("line")) {
+                StdDraw.line(t1, y1, t2, y2);
+            } else if (mode.equals("point")) {
+                StdDraw.point(t1, y1);
+            }
+        }
+
+        StdDraw.show();
+    }
+
+    /**
+     * Affiche plusieurs signaux sous forme de tableaux de réels, les signaux étant regroupés dans une liste de tableaux.
+     *
+     * @param listOfSigs la liste des signaux à afficher (liste de tableaux de réels)
+     * @param start      le premier échantillon à afficher
+     * @param stop       le dernier échantillon à afficher
+     * @param mode       "line" ou "point"
+     * @param title      le titre de la fenêtre
      */
     public static void displaySig(List<double[]> listOfSigs, int start, int stop, String mode, String title) {
         StdDraw.clear();
@@ -240,6 +277,7 @@ public class DosSend {
         }
 
         StdDraw.show();
+    
     }
 
       public static void main(String[] args) {
